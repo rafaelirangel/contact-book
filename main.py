@@ -57,3 +57,24 @@ def list_all_contacts():
     print('All contacts: ')
     for contacts in list_all:
         print(f'First Name: {contacts.first_name}\nLast Name: {contacts.last_name}\nPhone: {contacts.phone_num}\n Email: {contacts.email}')
+
+
+def start_contacts_book():
+    while True:
+        print('''Chose one of the following options:
+            1. Create a Contact
+            2. List All Contacts
+            3. Exit
+            ''')
+        choice = input('Enter your choice --> ')
+        if choice == '1':
+            create_contact()
+        elif choice == '2':
+            list_all_contacts()
+        elif choice == '3':
+            print('Exiting ...')
+            break
+        else: 
+            print('Not a valid choice, please try again!') 
+            
+start_contacts_book()
