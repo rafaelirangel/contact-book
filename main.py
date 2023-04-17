@@ -29,9 +29,31 @@ db.create_tables([ContactBook])
 
 #Create a new contact
 def create_contact():
-    first_name = input('What is the First Name? ')
-    last_name = input('What is the Last Name? ')
-    email = input('Enter an email address: ')
-    phone = int(input('Enter a phone number: '))
-    new_contact = ContactBook(first_name=first_name, last_name=last_name, email=email, phone=phone)
-    new_contact.save()
+     
+    create = True
+    while create:
+        new_first_name = input('What is the First Name? ')
+        new_last_name = input('What is the Last Name? ')
+        new_email = input('Enter an email address: ')
+        new_phone = int(input('Enter a phone number: '))
+        new_contact = ContactBook(
+            first_name=new_first_name, 
+            last_name=new_last_name, 
+            email=new_email, 
+            phone=new_phone)
+        new_contact.save()
+        
+        print('Would you like to add another contact?(yes / no) ')
+        user_input = str(input())
+        if user_input.lower == 'yes':
+            create = True
+        else:
+            create = False
+            break
+
+#List all contacts
+def list_all_contacts():
+    list_all = ContactBook.select()
+    print('All contacts: ')
+    for contacts in list_all:
+        print(f'First Name: {contacts.first_name}\nLast Name: {contacts.last_name}\nPhone: {contacts.phone_num}\n Email: {contacts.email}')
