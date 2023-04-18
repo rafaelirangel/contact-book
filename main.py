@@ -43,7 +43,7 @@ def create_contact():
             email=email, 
             phone=phone)
         new_contact.save()
-        
+        print('----------////----------')
         print('Would you like to add another contact?(yes / no) ')
         user_input = str(input())
         if user_input.lower() == 'yes':
@@ -58,6 +58,7 @@ def list_all_contacts():
     list_all = ContactBook.select()
     print('All contacts: ')
     for contacts in list_all:
+        print('----------////----------')
         print(
             f'First Name: {contacts.first_name}\nLast Name: {contacts.last_name}\nEmail: {contacts.email}\nPhone: {contacts.phone}\n')
 
@@ -68,6 +69,7 @@ def list_one_contact():
     list_one = ContactBook.select().where(ContactBook.first_name == search_contact)
     if list_one:
         for contact in list_one:
+            print('----------////----------')
             print(
                 f'First Name: {contact.first_name}\nLast Name: {contact.last_name}\nEmail: {contact.email}\nPhone Number: {contact.phone}\n')
     else:
@@ -75,47 +77,56 @@ def list_one_contact():
 
 #Update a contact by ID 
 def update_contact():
-    contact_id = input('Enter contact Id: ')
     
-    get_contact = ContactBook.select().where(ContactBook.id == contact_id) 
-    for contact in get_contact:
-        print(
-            f'First Name: {contact.first_name}\nLast Name: {contact.last_name}\nEmail: {contact.email}\nPhone Number: {contact.phone}\n')
-        print('\n')
-        print('What would you like to update? First Name(f), Last Name(l), Email(e), Phone(p), or All(a)...')
-        user_input = str(input(' ==> '))
+    update = True
+    while update:
         
-        update_contact = ContactBook.get(ContactBook.id == contact_id)
+        contact_id = input('Enter contact Id to uptade a contact: ')
         
-        if user_input.lower() == 'f':
-            new_first_name = str(input('Enter the first name: '))
-            update_contact.first_name = new_first_name
-            update_contact.save()
-        elif user_input.lower() == 'l':
-            new_last_name = str(input('Enter the last name: '))
-            update_contact.last_name = new_last_name
-            update_contact.save()
-        elif user_input.lower() == 'e':
-            new_email = str(input('Enter the email address: '))
-            update_contact.email = new_email
-            update_contact.save()    
-        elif user_input.lower() == 'p':
-            new_phone_number = str(input('Enter the phone number: '))
-            update_contact.phone = new_phone_number
-            update_contact.save()
-        elif user_input.lower() == 'a':
-            new_first_name = str(input('Enter the first name: '))
-            new_last_name = str(input('Enter the last name: '))
-            new_email = str(input('Enter the email address: '))
-            new_phone_number = str(input('Enter the phone number: '))
-            update_contact.first_name = new_first_name
-            update_contact.last_name = new_last_name
-            update_contact.email = new_email
-            update_contact.phone = new_phone_number
-            update_contact.save()
-        else:
-            ('Not a valid choice!')
-            break       
+        get_contact = ContactBook.select().where(ContactBook.id == contact_id) 
+        for contact in get_contact:
+            print('----------////----------')
+            print(
+                f'This is the contact you want to update:\nFirst Name: {contact.first_name}\nLast Name: {contact.last_name}\nEmail: {contact.email}\nPhone Number: {contact.phone}')
+            print('----------////----------')
+            print('What would you like to update? First Name(f), Last Name(l), Email(e), Phone(p), All(a), or Quit(q)...')
+            user_input = str(input(' ==> '))
+            
+            update_contact = ContactBook.get(ContactBook.id == contact_id)
+            
+            if user_input.lower() == 'f':
+                new_first_name = str(input('Enter the first name: '))
+                update_contact.first_name = new_first_name
+                update_contact.save()
+            elif user_input.lower() == 'l':
+                new_last_name = str(input('Enter the last name: '))
+                update_contact.last_name = new_last_name
+                update_contact.save()
+            elif user_input.lower() == 'e':
+                new_email = str(input('Enter the email address: '))
+                update_contact.email = new_email
+                update_contact.save()    
+            elif user_input.lower() == 'p':
+                new_phone_number = str(input('Enter the phone number: '))
+                update_contact.phone = new_phone_number
+                update_contact.save()
+            elif user_input.lower() == 'a':
+                new_first_name = str(input('Enter the first name: '))
+                new_last_name = str(input('Enter the last name: '))
+                new_email = str(input('Enter the email address: '))
+                new_phone_number = str(input('Enter the phone number: '))
+                update_contact.first_name = new_first_name
+                update_contact.last_name = new_last_name
+                update_contact.email = new_email
+                update_contact.phone = new_phone_number
+                update_contact.save()
+            elif user_input.lower() == 'q':
+                update = False
+                break
+            
+            else:
+                ('Not a valid choice!')
+                update = True  
         
 #Main Function
 def start_contacts_book():
