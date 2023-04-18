@@ -66,8 +66,9 @@ def list_all_contacts():
 # List a contact by the First Name
 def list_one_contact():
     search_contact = input('Enter the first name: ').lower()
-    list_one = ContactBook.select().where(ContactBook.first_name == search_contact)
+    list_one = ContactBook.get(ContactBook.first_name == search_contact)
     if list_one:
+        list_one = [list_one]
         for contact in list_one:
             print('----------////----------')
             print(
@@ -159,14 +160,13 @@ def delete_contact():
                 break            
         
     
-        
 #Main Function
 def start_contacts_book():
     while True:
         print('''Chose one of the following options:
             1. Create a Contact
             2. List All Contacts
-            3. List one specif Contact
+            3. List a specif Contact
             4. Update a contact
             5. Delete a contact
             6. Exit
