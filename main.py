@@ -63,7 +63,7 @@ def list_all_contacts():
             f'First Name: {contacts.first_name}\nLast Name: {contacts.last_name}\nEmail: {contacts.email}\nPhone: {contacts.phone}\n')
 
 
-# List one contact by the First Name
+# List a contact by the First Name
 def list_one_contact():
     search_contact = input('Enter the first name: ').lower()
     list_one = ContactBook.select().where(ContactBook.first_name == search_contact)
@@ -81,7 +81,7 @@ def update_contact():
     update = True
     while update:
         
-        contact_id = input('Enter contact Id to uptade a contact: ')
+        contact_id = input('Enter contact ID to uptade a contact: ')
         
         get_contact = ContactBook.select().where(ContactBook.id == contact_id) 
         for contact in get_contact:
@@ -127,6 +127,38 @@ def update_contact():
             else:
                 ('Not a valid choice!')
                 update = True  
+                
+# Delete a contact by ID
+def delete_contact():
+    delete = True
+    while delete:
+        contact_id = input('Enter contact ID to delete a contact: ')
+        get_contact = ContactBook.select().where(ContactBook.id == contact_id)
+        
+        for contact in get_contact:
+            print('----------////----------')
+            print('This is the contact you want to delete, are you sure about that? (yes/no)')
+            print('----------////----------')
+            print(f'First Name: {contact.first_name}\nLast Name: {contact.last_name}\nEmail: {contact.email}\nPhone Number: {contact.phone}\n')
+            user_input = str(input('==> ')).lower()
+            
+            get_contact = ContactBook.get(ContactBook.id == contact_id)
+            
+            if user_input.lower() == 'yes':
+                get_contact.delete_instance()
+                print('Your contact was deleted! ')
+                print('----------////----------')
+                new_delete = str(input('Would you like to delete another contact? (yes/no) ')).lower()
+                if new_delete == 'yes':
+                    delete = True
+                else:
+                    delete = False
+                    break           
+            else:
+                delete = False
+                break            
+        
+    
         
 #Main Function
 def start_contacts_book():
@@ -147,7 +179,9 @@ def start_contacts_book():
         elif choice == '3':
             list_one_contact()     
         elif choice == '4':
-            update_contact()          
+            update_contact()   
+        elif choice == '5':
+            delete_contact()          
         elif choice == '6':
             print('Exiting ...')
             break
