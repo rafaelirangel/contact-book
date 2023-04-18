@@ -17,6 +17,7 @@ class BaseModel(Model):
 
 
 class ContactBook(BaseModel):
+    id=AutoField()
     first_name = CharField()
     last_name = CharField()
     email = CharField()
@@ -24,7 +25,7 @@ class ContactBook(BaseModel):
 
 
 # Remove table if they exist then Create table from scratch
-db.drop_tables([ContactBook])
+# db.drop_tables([ContactBook])
 db.create_tables([ContactBook])
 
 #Create a new contact
@@ -45,11 +46,12 @@ def create_contact():
         
         print('Would you like to add another contact?(yes / no) ')
         user_input = str(input())
-        if user_input.lower == 'yes':
+        if user_input.lower() == 'yes':
             create = True
         else:
             create = False
             break
+
 
 #List all contacts
 def list_all_contacts():
@@ -57,19 +59,74 @@ def list_all_contacts():
     print('All contacts: ')
     for contacts in list_all:
         print(
-            f'First Name: {contacts.first_name}\nLast Name: {contacts.last_name}\nEmail: {contacts.email} Phone: {contacts.phone}\n  \n')
-        
-#Update a contact
+            f'First Name: {contacts.first_name}\nLast Name: {contacts.last_name}\nEmail: {contacts.email}\nPhone: {contacts.phone}\n')
+
+
+# List one contact by the First Name
+def list_one_contact():
+    search_contact = input('Enter the first name: ').lower()
+    list_one = ContactBook.select().where(ContactBook.first_name == search_contact)
+    if list_one:
+        for contact in list_one:
+            print(
+                f'First Name: {contact.first_name}\nLast Name: {contact.last_name}\nEmail: {contact.email}\nPhone Number: {contact.phone}\n')
+    else:
+        print('No contact found with the given first name.')
+
+#Update a contact by ID 
 def update_contact():
-    update_one = ContactBook.select        
-
-
+    contact_id = input('Enter contact Id: ')
+    
+    get_contact = ContactBook.select().where(ContactBook.id == contact_id) 
+    for contact in get_contact:
+        print(
+            f'First Name: {contact.first_name}\nLast Name: {contact.last_name}\nEmail: {contact.email}\nPhone Number: {contact.phone}\n')
+        print('\n')
+        print('What would you like to update? First Name(f), Last Name(l), Email(e), Phone(p), or All(a)...')
+        user_input = str(input(' ==> '))
+        
+        update_contact = ContactBook.get(ContactBook.id == contact_id)
+        
+        if user_input.lower() == 'f':
+            new_first_name = str(input('Enter the first name: '))
+            update_contact.first_name = new_first_name
+            update_contact.save()
+        elif user_input.lower() == 'l':
+            new_last_name = str(input('Enter the last name: '))
+            update_contact.last_name = new_last_name
+            update_contact.save()
+        elif user_input.lower() == 'e':
+            new_email = str(input('Enter the email address: '))
+            update_contact.email = new_email
+            update_contact.save()    
+        elif user_input.lower() == 'p':
+            new_phone_number = str(input('Enter the phone number: '))
+            update_contact.phone = new_phone_number
+            update_contact.save()
+        elif user_input.lower() == 'a':
+            new_first_name = str(input('Enter the first name: '))
+            new_last_name = str(input('Enter the last name: '))
+            new_email = str(input('Enter the email address: '))
+            new_phone_number = str(input('Enter the phone number: '))
+            update_contact.first_name = new_first_name
+            update_contact.last_name = new_last_name
+            update_contact.email = new_email
+            update_contact.phone = new_phone_number
+            update_contact.save()
+        else:
+            ('Not a valid choice!')
+            break       
+        
+#Main Function
 def start_contacts_book():
     while True:
         print('''Chose one of the following options:
             1. Create a Contact
             2. List All Contacts
-            3. Exit
+            3. List one specif Contact
+            4. Update a contact
+            5. Delete a contact
+            6. Exit
             ''')
         choice = input('Enter your choice number: ')
         if choice == '1':
@@ -77,6 +134,10 @@ def start_contacts_book():
         elif choice == '2':
             list_all_contacts()
         elif choice == '3':
+            list_one_contact()     
+        elif choice == '4':
+            update_contact()          
+        elif choice == '6':
             print('Exiting ...')
             break
         else: 
